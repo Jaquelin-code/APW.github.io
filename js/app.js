@@ -1,32 +1,33 @@
-const CACHE_NAME = 'aventura-marina-v4';
+// Configuración para GitHub Pages (/APW.github.io/)
+const CACHE_NAME = 'aventura-marina-final';
+const BASE_PATH = '/APW.github.io';
 const URLS_TO_CACHE = [
-  '/APW.github.io/',
-  '/APW.github.io/index.html',
-  '/APW.github.io/index1.html',
-  '/APW.github.io/index12.html',
-  '/APW.github.io/manifest.json',
-  '/APW.github.io/js/app.js',
-  '/APW.github.io/images/Captura de pantalla 2025-06-26 211713.png',
-  '/APW.github.io/images/ChatGPT Image 19 jun 2025, 08_57_38 p.m..png'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/index1.html`,
+  `${BASE_PATH}/index12.html`,
+  `${BASE_PATH}/manifest.json`,
+  `${BASE_PATH}/js/app.js`,
+  `${BASE_PATH}/images/Captura de pantalla 2025-06-26 211713.png`,
+  `${BASE_PATH}/images/ChatGPT Image 19 jun 2025, 08_57_38 p.m..png`
 ];
 
-self.addEventListener('install', event => {
+// Instalación
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('[SW] Cacheando recursos');
-        return cache.addAll(URLS_TO_CACHE);
-      })
-      .catch(err => console.error('[SW] Error al cachear:', err))
+      .then(cache => cache.addAll(URLS_TO_CACHE))
+      .catch(err => console.error('Error al cachear:', err))
   );
 });
 
-self.addEventListener('fetch', event => {
-  if (!event.request.url.startsWith('http')) return;
-  
+// Interceptar peticiones
+self.addEventListener('fetch', (event) => {
+  if (!event.request.url.includes(location.origin)) return;
+
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))
-      .catch(() => caches.match('/APW.github.io/index.html'))
+      .catch(() => caches.match(`${BASE_PATH}/index.html`))
   );
 });
