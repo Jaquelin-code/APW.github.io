@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión - Aventura Marina</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- En el <head> de tus HTML (index.html, index1.html, index12.html) -->
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet"> <!-- Tailwind via CDN HTTPS -->
+
+<!-- Antes del cierre de </body> -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
         import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
@@ -260,14 +264,15 @@
             </div>
         </div>
     </div>
+
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/APW.github.io/js/app.js', { 
         scope: '/APW.github.io/' 
       })
-      .then(reg => console.log('SW registrado con scope:', reg.scope))
-      .catch(err => console.error('Error al registrar SW:', err));
+      .then(reg => console.log('✅ SW registrado! Scope:', reg.scope))
+      .catch(err => console.error('❌ Error:', err));
     });
   }
 </script>
