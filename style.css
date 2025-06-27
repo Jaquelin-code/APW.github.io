@@ -57,6 +57,10 @@ body {
   margin-bottom: 20px;
 }
 
+.justificado {
+  text-align: justify;
+}
+
 .btn {
   padding: 14px 20px;
   background: var(--clr-primary);
