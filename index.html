@@ -4,80 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión - Aventura Marina</title>
+    <!-- Metadatos PWA -->
+    <link rel="manifest" href="/APW.github.io/manifest.json">
+    <meta name="theme-color" content="#2ba9d9">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- En el <head> de tus HTML (index.html, index1.html, index12.html) -->
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet"> <!-- Tailwind via CDN HTTPS -->
-
-<!-- Antes del cierre de </body> -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBHB_6aIb_MWTojKx0asdkdRSfhGO4Blys",
-            authDomain: "gbar-61a43.firebaseapp.com",
-            databaseURL: "https://gbar-61a43-default-rtdb.firebaseio.com",
-            projectId: "gbar-61a43",
-            storageBucket: "gbar-61a43.appspot.com",
-            messagingSenderId: "929964316297",
-            appId: "1:929964316297:web:53ef1aa347df095d86d858"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('loginForm');
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-
-                const userRef = ref(database);
-                try {
-                    const snapshot = await get(child(userRef, `Users/${name}`));
-                    if (snapshot.exists()) {
-                        const userData = snapshot.val();
-                        if (userData.email === email && userData.password === password) {
-                            showSuccessMessage();
-                        } else {
-                            showErrorMessage("Correo o contraseña incorrectos.");
-                        }
-                    } else {
-                        showErrorMessage("Usuario no encontrado.");
-                    }
-                } catch (error) {
-                    showErrorMessage("Error al verificar: " + error.message);
-                }
-            });
-        });
-
-        function showSuccessMessage() {
-            const bubble = document.createElement('div');
-            bubble.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg animate-bounce';
-            bubble.textContent = '¡Inicio exitoso! 🐙';
-            document.body.appendChild(bubble);
-
-            setTimeout(() => {
-                bubble.remove();
-                // Cambia "inicio.html" por la ruta a donde quieras ir
-                window.location.href = "index12.html"; 
-            }, 2000); // Espera 2 segundos antes de redirigir
-        }
-
-        function showErrorMessage(msg) {
-            const bubble = document.createElement('div');
-            bubble.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-full shadow-lg animate-bounce';
-            bubble.textContent = `Error: ${msg} 😢`;
-            document.body.appendChild(bubble);
-            setTimeout(() => {
-                bubble.remove();
-            }, 3000);
-        }
-    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
         body {
@@ -264,48 +195,119 @@
             </div>
         </div>
     </div>
-                  <button id="installBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hidden z-50">
-  📲 Instalar App
-</button>
 
-<script>
-  // Registro del Service Worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/APW.github.io/app.js', {
-        scope: '/APW.github.io/'
-      });
-    });
-  }
+    <!-- Botón de instalación PWA -->
+    <button id="installBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hidden z-50">
+        📲 Instalar App
+    </button>
 
-  // Lógica de instalación
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.classList.remove('hidden');
-  });
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHB_6aIb_MWTojKx0asdkdRSfhGO4Blys",
+            authDomain: "gbar-61a43.firebaseapp.com",
+            databaseURL: "https://gbar-61a43-default-rtdb.firebaseio.com",
+            projectId: "gbar-61a43",
+            storageBucket: "gbar-61a43.appspot.com",
+            messagingSenderId: "929964316297",
+            appId: "1:929964316297:web:53ef1aa347df095d86d858"
+        };
 
-  installBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      installBtn.classList.add('hidden');
-      console.log('¡App instalada!');
-    }
-    deferredPrompt = null;
-  });
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-  // Ocultar botón si ya está instalado
-  window.addEventListener('appinstalled', () => {
-    installBtn.classList.add('hidden');
-  });
-</script>
-                      <button id="installBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hidden z-50">
-  📲 Instalar App
-</button>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('loginForm');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                const userRef = ref(database);
+                try {
+                    const snapshot = await get(child(userRef, `Users/${name}`));
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        if (userData.email === email && userData.password === password) {
+                            showSuccessMessage();
+                        } else {
+                            showErrorMessage("Correo o contraseña incorrectos.");
+                        }
+                    } else {
+                        showErrorMessage("Usuario no encontrado.");
+                    }
+                } catch (error) {
+                    showErrorMessage("Error al verificar: " + error.message);
+                }
+            });
+        });
+
+        function showSuccessMessage() {
+            const bubble = document.createElement('div');
+            bubble.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg animate-bounce';
+            bubble.textContent = '¡Inicio exitoso! 🐙';
+            document.body.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.remove();
+                window.location.href = "index12.html"; 
+            }, 2000);
+        }
+
+        function showErrorMessage(msg) {
+            const bubble = document.createElement('div');
+            bubble.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-full shadow-lg animate-bounce';
+            bubble.textContent = `Error: ${msg} 😢`;
+            document.body.appendChild(bubble);
+            setTimeout(() => {
+                bubble.remove();
+            }, 3000);
+        }
+    </script>
+
+    <script>
+        // Registro del Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/APW.github.io/app.js', {
+                    scope: '/APW.github.io/'
+                }).then(registration => {
+                    console.log('ServiceWorker registrado con éxito:', registration.scope);
+                }).catch(error => {
+                    console.error('Error al registrar ServiceWorker:', error);
+                });
+            });
+        }
+
+        // Lógica de instalación PWA
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>
