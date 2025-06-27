@@ -6,7 +6,7 @@ const urlsToCache = [
   '/js/app.js',
   '/manifest.json',
   'images/ChatGPT Image 19 jun 2025, 08_57_38 p.m..png',
-  'Captura de pantalla 2025-06-26 211713.png',
+  'images/Captura de pantalla 2025-06-26 211713.png',
 ];
 
 self.addEventListener('install', event => {
