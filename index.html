@@ -263,13 +263,11 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/js/app.js')
-        .then(registration => {
-          console.log('SW registrado:', registration.scope);
-        })
-        .catch(error => {
-          console.log('Error al registrar SW:', error);
-        });
+      navigator.serviceWorker.register('/APW.github.io/js/app.js', { 
+        scope: '/APW.github.io/' 
+      })
+      .then(reg => console.log('SW registrado con scope:', reg.scope))
+      .catch(err => console.error('Error al registrar SW:', err));
     });
   }
 </script>
