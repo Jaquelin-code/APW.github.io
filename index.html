@@ -262,33 +262,59 @@
             <div class="footer">
                 <p>¿No tienes cuenta? <a href="index1.html" class="text-blue-600 underline">Regístrate aquí</a></p>
             </div>
+            <button id="install-btn" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  background: #2ba9d9;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  display: none;
+  cursor: pointer;
+  z-index: 1000;
+">
+  Instalar App
+</button>
         </div>
     </div>
 
 <script>
-  // Registra el Service Worker
+  // Registro del Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/APW.github.io/app.js', {
         scope: '/APW.github.io/'
-      });
+      })
+      .then(reg => console.log('SW registrado:', reg.scope))
+      .catch(err => console.error('Error SW:', err));
     });
   }
 
-  // Botón de instalación (opcional)
+  // Lógica de instalación
   let deferredPrompt;
+  const installBtn = document.getElementById('install-btn');
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    document.getElementById('install-btn').style.display = 'block';
+    if(installBtn) installBtn.style.display = 'block'; // Verifica si el botón existe
   });
 
-  document.getElementById('install-btn').addEventListener('click', () => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
+  if(installBtn) { // Solo si el botón existe
+    installBtn.addEventListener('click', async () => {
+      if(deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log('Resultado instalación:', outcome);
+        if(outcome === 'accepted') {
+          installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
     });
-  });
+  }
 </script>
 </body>
 </html>
