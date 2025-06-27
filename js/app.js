@@ -1,7 +1,7 @@
 const CACHE_NAME = 'aventura-marina-v1';
 const URLS_TO_CACHE = [
   '/',               // página principal
-  '/index.html',
+
   '/index1.html',
   '/index12.html',
   '/manifest.json',
