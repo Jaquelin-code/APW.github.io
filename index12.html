@@ -282,6 +282,18 @@
       nomodule
       src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
     ></script>
-    <script src="/js/app.js"></script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/js/app.js')
+        .then(registration => {
+          console.log('SW registrado:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Error al registrar SW:', error);
+        });
+    });
+  }
+</script>
   </body>
 </html>
