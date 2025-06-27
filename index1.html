@@ -292,13 +292,16 @@
             </div>
         </div>
     </div>
-    <script>
+<script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/js/service-worker.js', { scope: '/' }) // <- alcance global
-        .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-        .catch(err => console.error('❌ Error al registrar el SW:', err));
+      navigator.serviceWorker.register('/js/app.js')
+        .then(registration => {
+          console.log('SW registrado:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Error al registrar SW:', error);
+        });
     });
   }
 </script>
