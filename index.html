@@ -261,24 +261,12 @@
 
             <div class="footer">
                 <p>¿No tienes cuenta? <a href="index1.html" class="text-blue-600 underline">Regístrate aquí</a></p>
-                            <button id="install-btn" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 15px;
-  background: #2ba9d9;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  display: none;
-  cursor: pointer;
-  z-index: 1000;
-">
-  Instalar App
-</button>
             </div>
         </div>
     </div>
+                  <button id="installBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hidden z-50">
+  📲 Instalar App
+</button>
 
 <script>
   // Registro del Service Worker
@@ -286,35 +274,38 @@
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/APW.github.io/app.js', {
         scope: '/APW.github.io/'
-      })
-      .then(reg => console.log('SW registrado:', reg.scope))
-      .catch(err => console.error('Error SW:', err));
+      });
     });
   }
 
   // Lógica de instalación
   let deferredPrompt;
-  const installBtn = document.getElementById('install-btn');
+  const installBtn = document.getElementById('installBtn');
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if(installBtn) installBtn.style.display = 'block'; // Verifica si el botón existe
+    installBtn.classList.remove('hidden');
   });
 
-  if(installBtn) { // Solo si el botón existe
-    installBtn.addEventListener('click', async () => {
-      if(deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log('Resultado instalación:', outcome);
-        if(outcome === 'accepted') {
-          installBtn.style.display = 'none';
-        }
-        deferredPrompt = null;
-      }
-    });
-  }
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installBtn.classList.add('hidden');
+      console.log('¡App instalada!');
+    }
+    deferredPrompt = null;
+  });
+
+  // Ocultar botón si ya está instalado
+  window.addEventListener('appinstalled', () => {
+    installBtn.classList.add('hidden');
+  });
 </script>
+                      <button id="installBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hidden z-50">
+  📲 Instalar App
+</button>
 </body>
 </html>
